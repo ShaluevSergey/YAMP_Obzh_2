@@ -3,15 +3,15 @@ using namespace std;
 
 struct Node
 {
-	int info;
-	Node* left, * right;
+	int info;//поле данных
+	Node* left, * right;//указатель влево и вправо
 };
 
 //Удаление
-Node* Deletenode(Node* node, int x)
+Node* Deletenode(Node* node, int x)//передаём дерево и номер элемента (начиная отсчёт с 0)
 {
 	bool ok = false;
-	if (node == NULL)
+	if (node == NULL)//если дерево пусто
 		return node;
 	if (x == node->info)
 	{
@@ -29,13 +29,13 @@ Node* Deletenode(Node* node, int x)
 			{
 				//buf - текущий элемент, temp - указатель на него
 				Node* buf = node->right, * temp = node;
-				if (buf->left != NULL)
+				if (buf->left != NULL)//если слева не пусто
 				{
 					temp = buf;
 					buf = buf->left;
 					ok = true;
 				}
-				while (buf->left != NULL)
+				while (buf->left != NULL)//пока слева не пусто идём влево
 				{
 					buf = buf->left;
 					temp = temp->left;
@@ -45,7 +45,7 @@ Node* Deletenode(Node* node, int x)
 					temp->left = buf->right;
 				else
 					temp->right = buf->right;
-				delete buf;
+				delete buf;//удаляем
 			}
 			else
 			{
@@ -70,12 +70,14 @@ Node* Deletenode(Node* node, int x)
 		node->left = Deletenode(node->left, x);
 	else
 		node->right = Deletenode(node->right, x);
-	return node;
+	return node;//возвращаем дерево
 }
 
 //Вставка элемента
-Node* addnode(int x, Node* node) {
-	if (node == NULL) {
+Node* addnode(int x, Node* node) //передаём значение и дерево
+{
+	if (node == NULL)//если дерево пустое 
+	{
 		node = new Node;
 		node->info = x;
 		node->left = NULL;
@@ -85,44 +87,48 @@ Node* addnode(int x, Node* node) {
 		node->left = addnode(x, node->left);
 	else
 		node->right = addnode(x, node->right);
-	return(node);
+	return(node);//возвращаем дерево
 }
 
 //Обход дерева в префиксной форме
-void pre_print(Node* node) {
-	if (node != NULL) {
+void pre_print(Node* node) 
+{
+	if (node != NULL) 
+	{
 		cout << node->info << " ";
-		pre_print(node->left);
-		pre_print(node->right);
+		pre_print(node->left);//посещаем левый узел
+		pre_print(node->right);//посещаем правый узел
 	}
 }
 
 //Обход дерева в инфиксной форме
-void inf_print(Node* node) {
+void inf_print(Node* node) 
+{
 	if (node != NULL) {
-		inf_print(node->left);
+		inf_print(node->left);//посещаем левый узел
 		cout << node->info << " ";
-		inf_print(node->right);
+		inf_print(node->right);//посещаем правый узел
 	}
 }
 
 //Обход дерева в постфиксной форме
 void post_print(Node* node) {
-	if (node != NULL) {
-		post_print(node->left);
-		post_print(node->right);
+	if (node != NULL) 
+	{
+		post_print(node->left);//посещаем левый потомок
+		post_print(node->right);//посещаем правый потомок
 		cout << node->info << " ";
 	}
 }
 
 //Поиск элемента в дереве
-Node* find(Node* node, float d)
+Node* find(Node* node, float d)//передаём дерево и сам элемент для поиска
 {
-	if (node == NULL)
+	if (node == NULL)//если пустое дерево
 	{
 		return NULL;
 	}
-	if (node->info == d)
+	if (node->info == d)//если элемент есть
 	{
 		return node;
 	}
@@ -130,7 +136,7 @@ Node* find(Node* node, float d)
 	if (d < node->info)
 	{
 		if (node->left != NULL)
-			return find(node->left, d);
+			return find(node->left, d);//поиск влево
 		else
 		{
 			return NULL;
@@ -139,7 +145,7 @@ Node* find(Node* node, float d)
 	else
 	{
 		if (node->right)
-			return find(node->right, d);
+			return find(node->right, d);//поиск вправо
 		else
 		{
 			return NULL;
